@@ -2,4 +2,4 @@
 
  - [UL(Unsupervised Learning)](https://github.com/dupyo/ai-note/tree/main/UL)  
     - [GAN](https://github.com/dupyo/ai-note/tree/main/UL/GAN.md)
- - basis
+ - [basis](https://github.com/dupyo/ai-note/tree/main/basis)
