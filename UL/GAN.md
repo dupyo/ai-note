@@ -99,3 +99,21 @@ discriminator.add(LeakyReLU(0.2))
 discriminator.add(Dropout(0.3))
 discriminator.add(Dense(1, activation='sigmoid'))
 ```
+
+다음으로 생성기와 판별기를 함께 결합해 GAN을 구성한다. GAN에서는 trainable 인수를 False로 설정해 판별기 가중치를 고정시킨다.
+
+```python
+discriminator.trainable = False
+ganInput = Input(shape=(randomDim,))
+x = generator(ganInput)
+ganOutput = discriminator(x)
+gan = Model(inputs=ganInput, outputs=ganOutput)
+```
+
+이 둘을 훈련시키는 비결은 먼저 판별기를 따로 훈련시키는 것이다. 여기서 판별기의 손실 함수로는 이진 교차 엔트로피를 사용한다. 나중에 판별기의 가중치를 동결하고 결합된 GAN을 훈련시킨다. 이때 생성기가 훈련된다. 이번에도 손실 함수는 이진 교차 엔트로피이다. 
+
+```python
+discriminator.compile(loss='binary_crossentropy', optimizer='adam')
+gan.compile(loss='binary_crossentropy', optimizer='adam')
+```
+
