@@ -117,3 +117,39 @@ discriminator.compile(loss='binary_crossentropy', optimizer='adam')
 gan.compile(loss='binary_crossentropy', optimizer='adam')
 ```
 
+```python
+discriminator.compile(loss='binary_crossentropy', optimizer='adam')
+gan.compile(loss='binary_crossentropy', optimizer='adam')
+```
+
+이제 훈련을 시작한다. 에포크마다 랜덤 노이즈 샘플을 먼저 생성기에 공급하면 생성기는 가짜 이미지를 만든다. 생성된 가짜 이미지와 실제 훈련 이미지를 특정 레이블과 함께 배치하고 이를 사용해 주어진 배치에서 먼저 판별기를 훈련시킨다. 
+
+```python
+def train(epochs=1, batchSize=128):
+  batchCount = int(X_train.shape[0] / batchSize)
+  print ('Epochs:', epochs)
+  print ('Batch size:', batchSize)
+  print ('Batch per epoch:', batchCount)
+  
+  for e in range(1, epochs+1):
+    print ('-'*15, 'Epoch %d' % e, '-'*15)
+    for _ in range(batchCount):
+    # 랜덤 입력 노이즈와 이미지를 얻는다.
+      noise = np.random.normal(0, 1, size=[batchSize, randomDim])
+      imageBatch = X_train[np.random.randint(0, X_train.shape[0], size=batchSize)]
+
+      # 가짜 MNIST 이미지 생성
+      generatedImages = generator.predict(noise)
+      # np.shape(imageBatch), np.shape(generatedImages) 출력
+      X = np.concatenate([imageBatch, generatedImages])
+
+      # 생성된 것과 실제 이미지의 레이블
+      yDis = np.zeros(2*batchSize)
+      # 편파적 레이블 평활화
+      yDis[:batchSize] = 0.9
+
+      # 판별기 훈련
+      discriminator.trainable = True
+      dloss = discriminator.train_on_batch(X, yDis)
+```
+
