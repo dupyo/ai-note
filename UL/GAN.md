@@ -8,7 +8,6 @@
 > 즉, 작가가 더 유명한 다른 예술가의 예술작품을 위조하는 과정과 비슷하다.*  
 
 
-
 GAN은 다음 그림처럼 두 개의 신경망을 동시에 훈련한다. 
 생성기generator G(Z)는 작품을 위조하고 판별기discriminator D(Y)는 관찰한 진짜 작품에 기반을 두고 위조한 작품이 얼마나 진짜 같은지를 판단한다. 
 D(Y)는 입력으로 Y(예를 들어 하나의 이미지)를 받아 입력 변수가 얼마나 진짜 같은지를 판단하고자 투표한다. 
@@ -35,7 +34,6 @@ G(Z)는 랜덤 노이즈 Z에서 입력을 받아 G(Z)가 생성하는 모든 �
 
 
 > *위조범이 모든 경우에 판사를 속이는 방법을 즉시 배운다면 위조범은 더 이상 배울 것이 없다.*
-
 
 
 GAN의 수렴과 다른 종류의 GAN의 안정성에 대한 세부 사항 참고 링크 : [Convergence and Stability of GAN training](https://avg.is.tuebingen.mpg.de/projects/convergence-and-stability-of-gan-training)
@@ -66,6 +64,8 @@ X_train = (X_train.astype(np.float32) - 127.5) / 127.5
 ```python
 X_train = X_train.reshape(60000, 784)
 ```
+
+### 생성기(Generator)와 판별기(Discriminator) 구축
 
 이제 생성기와 판별기를 구축해야 한다. 생성기의 목적은 노이즈 입력을 수신하고 훈련 데이터셋과 유사한 이미지를 생성하는 것이다. 노이즈 입력의 크기는 변수 randomDim으로 설정한다. 임의의 정수 값으로 초기화 하면 되는데, 대개 100으로 값을 설정한다. 
 
@@ -100,6 +100,8 @@ discriminator.add(Dropout(0.3))
 discriminator.add(Dense(1, activation='sigmoid'))
 ```
 
+### GAN 구성
+
 다음으로 생성기와 판별기를 함께 결합해 GAN을 구성한다. GAN에서는 trainable 인수를 False로 설정해 판별기 가중치를 고정시킨다.
 
 ```python
@@ -117,12 +119,9 @@ discriminator.compile(loss='binary_crossentropy', optimizer='adam')
 gan.compile(loss='binary_crossentropy', optimizer='adam')
 ```
 
-```python
-discriminator.compile(loss='binary_crossentropy', optimizer='adam')
-gan.compile(loss='binary_crossentropy', optimizer='adam')
-```
+### 생성기(Generator)와 판별기(Discriminator) 훈련
 
-이제 훈련을 시작한다. 에포크마다 랜덤 노이즈 샘플을 먼저 생성기에 공급하면 생성기는 가짜 이미지를 만든다. 생성된 가짜 이미지와 실제 훈련 이미지를 특정 레이블과 함께 배치하고 이를 사용해 주어진 배치에서 먼저 판별기를 훈련시킨다. 
+이제 훈련을 시작한다. 에포크마다 랜덤 노이즈 샘플을 먼저 생성기에 공급하면 생성기는 가짜 이미지를 만든다. 생성된 가짜 이미지와 실제 훈련 이미지를 특정 레이블과 함께 배치하고 이를 사용해 주어진 배치에서 먼저 판별기를 훈련시킨다.
 
 ```python
 def train(epochs=1, batchSize=128):
