@@ -152,3 +152,13 @@ def train(epochs=1, batchSize=128):
       dloss = discriminator.train_on_batch(X, yDis)
 ```
 
+이제 동일한 for 루프에서 생성기를 훈련시킨다. 생성기가 만든 이미지가 판별기에 의해 진짜인 것으로 판별되기를 원하므로 랜덤 벡터(노이즈)를 생성기의 입력으로 사용한다. 이 방법은 가짜 이미지를 생성한 후 판별기가 이미지를 진짜 이미지인 것으로 인식하도록 GAN을 훈련시킨다(출력 1).
+
+```python
+# 생성기 훈련
+noise = np.random.normal(0, 1, size=[batchSize, randomDim])
+yGen = np.ones(batchSize)
+discriminator.trainable = False
+gloss = gan.train_on_batch(noise, yGen)
+```
+
