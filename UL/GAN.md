@@ -162,3 +162,23 @@ discriminator.trainable = False
 gloss = gan.train_on_batch(noise, yGen)
 ```
 
+원한다면 생성기와 판별기의 손실과 생성된 이미지를 저장할 수 있다. 다음으로 각 에포크에 대한 손실을 저장하고 20 에포크마다 이미지를 생성한다. 
+
+```python
+# 이 에포크의 최근 배치에서의 손실을 저장
+dLosses.append(dloss)
+gLosses.append(gloss)
+
+if e == 1 or e % 20 == 0:
+	saveGeneratedImages(e)
+```
+
+이제 GAN 함수를 호출해 GAN을 훈련시킬 수 있다. 다음 그래프에서 GAN이 학습하는 동안 생성기와 판별기의 손실을 도식화한 것을 볼 수 있다. 
+
+![KakaoTalk_20220823_221831631_02.jpg](https://user-images.githubusercontent.com/42468263/189040762-7ff6181b-25e4-4a59-ae0c-8e84b2813daa.png)
+
+여기서 만든 GAN이 생성한 필기체 숫자는 다음과 같다.
+
+![KakaoTalk_20220823_221831631_01.jpg](https://user-images.githubusercontent.com/42468263/189040914-832f019c-83c3-4034-8ced-431656d52e32.png)
+
+![KakaoTalk_20220823_221831631.jpg](https://user-images.githubusercontent.com/42468263/189040970-f798bbdd-f3e0-4526-a9b9-af8b9f664414.png)
