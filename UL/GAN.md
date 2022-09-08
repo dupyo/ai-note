@@ -182,3 +182,36 @@ if e == 1 or e % 20 == 0:
 ![KakaoTalk_20220823_221831631_01.jpg](https://user-images.githubusercontent.com/42468263/189040914-832f019c-83c3-4034-8ced-431656d52e32.png)
 
 ![KakaoTalk_20220823_221831631.jpg](https://user-images.githubusercontent.com/42468263/189040970-f798bbdd-f3e0-4526-a9b9-af8b9f664414.png)
+
+앞 그림을 보면 에포크가 증가함에 따라 GAN이 생성한 필기체 숫자가 점점 더 실제처럼 되는 것을 알 수 있다.
+
+필기체 숫자의 손실과 생성된 이미지를 표시하고자 saveGeneratedImages()와 plotLoss()라는 두 가지 헬퍼 함수를 정의한다. 해당 코드는 다음과 같다.
+
+```python
+# 각 배치에서 손실 도식화
+def plotLoss(epoch):
+	plt.figure(figsize=(10, 8))
+	plt.plot(dLosses, label='Discriminitive loss')
+	plt.plot(gLosses, label='Generative loss')
+	plt.xlabel('Epoch')
+	plt.ylabel('Loss')
+	plt.legend()
+	plt.savefig('images/gan_loss_epoch_%d.png' % epoch)
+
+# 생성된 MNIST 이미지 나열
+def saveGeneratedImages(epoch, examples=100, dim=(10, 10), figsize=(10, 10)):
+	noise = np.random.normal(0, 1, size=[examples, randomDim])
+	generatedImages = generator.predict(noise)
+	generatedImages = generatedImages.reshape(examples, 28, 28)
+
+	plt.figure(figsize=figsize)
+	for i in range(generatedImages.shape[0]):
+		plt.subplot(dim[0], dim[1], i+1)
+		plt.imshow(generatedImages[i], interpolation='nearest', cmap='gray_r')
+
+		plt.axis('off')
+	plt.tight_layout()
+	plt.savefig('images/gan_generated_image_epoch_%d.png' % epoch)
+```
+
+전체 코드는 6장의 깃허브 저장소에 있는 노트북 VanillaGAN.ipynb에서 구할 수 있다. 다음 절에서는 최신 GAN 아키텍처를 살펴보고 텐서플로에서 구현해본다.
