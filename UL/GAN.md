@@ -214,4 +214,5 @@ def saveGeneratedImages(epoch, examples=100, dim=(10, 10), figsize=(10, 10)):
 	plt.savefig('images/gan_generated_image_epoch_%d.png' % epoch)
 ```
 
-전체 코드는 6장의 깃허브 저장소에 있는 노트북 VanillaGAN.ipynb에서 구할 수 있다. 다음 절에서는 최신 GAN 아키텍처를 살펴보고 텐서플로에서 구현해본다.
+전체 코드는 6장의 깃허브 저장소에 있는 노트북 VanillaGAN.ipynb에서 구할 수 있다. 
+<!-- 다음 절에서는 최신 GAN 아키텍처를 살펴보고 텐서플로에서 구현해본다. -->
