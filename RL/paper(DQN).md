@@ -10,8 +10,6 @@ We find that it out performs all previous approaches on six of the games and sur
 
 ## Introduction
 
-Introduction 
-
 Learning to control agents directly from high-dimensional sensory inputs like vision and speech is one of the long-standing challenges of reinforcement learning(RL). 
 Most successful RL applications that operate on these domains have relied on hand-crafted features combined with linear value functions or policy representations. 
 Clearly, the performance of such system sheavily relies on the quality of the feature representation. 
